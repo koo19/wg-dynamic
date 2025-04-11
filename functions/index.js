@@ -34,7 +34,7 @@ export async function onRequest(context) {
     const port = baseHour + 50000;
     const wgurl = `wg://${env.WG_HOST}:${port}` +
       `?publicKey=${env.PUBLIC_KEY}&privateKey=${env.PRIVATE_KEY}&presharedKey=${env.PRESHARED_KEY}` +
-      "&ip=10.2.1.3/32&mtu=1420&dns=9.9.9.11&persistentkeepalive=1&keepalive=1" +
+      "&ip=10.2.1.3/32&mtu=1420&dns=9.9.9.11&keepalive=1s&udp=1" +
       "&obfs=amneziawg&obfsParam=336,36,636,0,0,0,0,0,0&flag=HK#hk-w"
       + "-" + port;
     return wgurl;
@@ -42,7 +42,7 @@ export async function onRequest(context) {
 
   // 构造从当前小时起的连续12小时序列
   let hoursSequence = [];
-  for (let i = 0; i < 1; i++) {
+  for (let i = 0; i < 4; i++) {
     hoursSequence.push(genWgurl(hoursOfYear + i));
   }
 

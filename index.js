@@ -1,5 +1,20 @@
 export default {
-  async fetch(request) {
+  async fetch(request, env, context) {
+    // 从 URL 中获取查询参数
+    const url = new URL(request.url);
+    const providedAccessKey = url.searchParams.get("accesskey");
+
+    // 读取绑定在环境变量中的预期 accesskey
+    const expectedAccessKey = env.ACCESS_KEY;
+
+    // 如果 accesskey 不匹配，返回 401 未授权响应
+    if (providedAccessKey !== expectedAccessKey) {
+      return new Response("Unauthorized: Invalid access key.", {
+        status: 401,
+        headers: { "Content-Type": "text/plain; charset=utf-8" },
+      });
+    }
+    
     const currentDate = new Date(); // 获取当前 UTC 时间
     const utc8Offset = 8 * 60 * 60 * 1000; // UTC+8 的偏移量（毫秒）
     const currentDateUtc8 = new Date(currentDate.getTime() + utc8Offset); // 转换为 UTC+8 时间

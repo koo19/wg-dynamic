@@ -32,8 +32,9 @@ export async function onRequest(context) {
   // 根据 baseHour 生成 wg 链接
   function genWgurl(baseHour) {
     const port = baseHour + 60000;
-    const wgurl = "wg://raw.hk.xuedong.xyz:" + port +
-      "?publicKey=${publicKey}&privateKey=${privateKey}&presharedKey=${presharedKey}" +
+    // 修复: 使用实际的密钥值替换模板字符串
+    const wgurl = `wg://raw.hk.xuedong.xyz:${port}` +
+      `?publicKey=${env.PUBLIC_KEY}&privateKey=${env.PRIVATE_KEY}&presharedKey=${env.PRESHARED_KEY}` +
       "&ip=10.2.1.3/32&mtu=1420&dns=9.9.9.11&keepalive=1&udp=1" +
       "&obfs=amneziawg&obfsParam=336,36,636,0,0,0,0,0,0&flag=HK#hk-w-52E4ZTXE";
     return wgurl;

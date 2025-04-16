@@ -58,14 +58,14 @@ export async function onRequest(context) {
     const wgurl = `wg://${configSet.wgHost}:${port}` +
       `?publicKey=${configSet.publicKey}&privateKey=${configSet.privateKey}&presharedKey=${configSet.presharedKey}` +
       "&ip=10.2.1.3/32&mtu=1420&dns=9.9.9.11&keepalive=1&udp=1" +
-      "&obfs=amneziawg&obfsParam=336,36,636,0,0,0,0,0,0&flag=HK#hk-w" +
+      "&obfs=amneziawg&obfsParam=336,36,636,0,0,1,2,3,4&flag=HK#hk-w" +
       "-" + port;
     return wgurl;
   }
 
-  // 构造从当前小时起的连续4小时序列
+  // 构造从当前小时起的连续小时序列
   let hoursSequence = [];
-  for (let i = 0; i < 4; i++) {
+  for (let i = 0; i < 6; i++) {
     hoursSequence.push(genWgurl(hoursOfYear + i));
   }
 

@@ -65,7 +65,7 @@ export async function onRequest(context) {
 
   // 构造从当前小时起的连续小时序列
   let hoursSequence = [];
-  for (let i = 0; i < 6; i++) {
+  for (let i = 0; i < 12; i++) {
     hoursSequence.push(genWgurl(hoursOfYear + i));
   }
 

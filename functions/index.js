@@ -58,7 +58,7 @@ export async function onRequest(context) {
     const wgurl = `wg://${configSet.wgHost}:${port}` +
       `?publicKey=${configSet.publicKey}&privateKey=${configSet.privateKey}&presharedKey=${configSet.presharedKey}` +
       "&ip=10.2.1.3/32&mtu=1420&dns=9.9.9.11&keepalive=1&udp=1" +
-      "&obfs=amneziawg&obfsParam=336,36,636,0,0,1,2,3,4&flag=HK#hk-w" +
+      "&obfs=amneziawg&obfsParam=336,36,636,0,0,1954,3778,2287,2479&flag=HK#hk-w" +
       "-" + port;
     return wgurl;
   }

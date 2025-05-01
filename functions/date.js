@@ -14,14 +14,14 @@ export async function onRequest(context) {
     });
   }
 
-  const { hoursOfYear } = getTimeInfo();
+  const { curDateNumber } = getTimeInfo();
 
-  let hoursSequence = [];
-  for (let i = 0; i < 12; i++) {
-    hoursSequence.push(genWgurl(configSet, hoursOfYear + i));
+  let dateSequence = [];
+  for (let i = 0; i < 1; i++) {
+    dateSequence.push(genWgurl(configSet, (curDateNumber + i), 60000));
   }
 
-  return new Response(hoursSequence.join("\n"), {
+  return new Response(dateSequence.join("\n"), {
     headers: { "Content-Type": "text/plain; charset=utf-8" },
   });
 }

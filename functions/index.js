@@ -7,7 +7,7 @@ export async function onRequest(context) {
   // 查找匹配的配置组
   let configSet = null;
   let keyIndex = 1;
-  
+
   while (env[`ACCESS_KEY_${keyIndex}`] !== undefined) {
     if (providedAccessKey === env[`ACCESS_KEY_${keyIndex}`]) {
       configSet = {
@@ -52,9 +52,21 @@ export async function onRequest(context) {
     (currentDateUtc8.getTime() - startOfYear.getTime()) / (1000 * 60 * 60)
   );
 
-  // 根据 baseHour 生成 wg 链接
-  function genWgurl(baseHour) {
-    const port = baseHour + 50000;
+  const now = new Date();
+
+  const utcTime = now.getTime() + now.getTimezoneOffset() * 60000;
+
+  const utc8Time = new Date(utcTime + 8 * 3600000);
+
+  const month = String(utc8Time.getMonth() + 1).padStart(2, '0');
+
+  const day = String(utc8Time.getDate()).padStart(2, '0');
+
+  const curDate = month + day;
+
+  // 根据 suffix 生成 wg 链接
+  function genWgurl(suffix, basePort = 50000) {
+    const port = suffix + basePort;
     const wgurl = `wg://${configSet.wgHost}:${port}` +
       `?publicKey=${configSet.publicKey}&privateKey=${configSet.privateKey}&presharedKey=${configSet.presharedKey}` +
       "&ip=10.2.1.3/32&mtu=1420&dns=9.9.9.11&keepalive=1&udp=1" +
@@ -69,7 +81,18 @@ export async function onRequest(context) {
     hoursSequence.push(genWgurl(hoursOfYear + i));
   }
 
-  return new Response(hoursSequence.join("\n"), {
-    headers: { "Content-Type": "text/plain; charset=utf-8" },
-  });
+  let dateSequence = [];
+  for (let i = 0; i < 1; i++) {
+    dateSequence.push(genWgurl(curDate + i));
+  }
+
+  if (url.pathname === "/date") {
+    return new Response(hoursSequence.join("\n"), {
+      headers: { "Content-Type": "text/plain; charset=utf-8" },
+    });
+  } else {
+    return new Response(dateSequence.join("\n"), {
+      headers: { "Content-Type": "text/plain; charset=utf-8" },
+    });
+  }
 }

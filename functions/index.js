@@ -62,7 +62,7 @@ export async function onRequest(context) {
 
   const day = String(utc8Time.getDate()).padStart(2, '0');
 
-  const curDate = month + day;
+  const curDateNumber = Number(month + day);
 
   // 根据 suffix 生成 wg 链接
   function genWgurl(suffix, basePort = 50000) {
@@ -83,15 +83,15 @@ export async function onRequest(context) {
 
   let dateSequence = [];
   for (let i = 0; i < 1; i++) {
-    dateSequence.push(genWgurl(curDate + i));
+    dateSequence.push(genWgurl(curDateNumber + i));
   }
 
   if (url.pathname === "/date") {
-    return new Response(hoursSequence.join("\n"), {
+    return new Response(dateSequence.join("\n"), {
       headers: { "Content-Type": "text/plain; charset=utf-8" },
     });
   } else {
-    return new Response(dateSequence.join("\n"), {
+    return new Response(hoursSequence.join("\n"), {
       headers: { "Content-Type": "text/plain; charset=utf-8" },
     });
   }

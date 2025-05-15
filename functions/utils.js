@@ -33,16 +33,13 @@ export function getTimeInfo() {
   const currentDate = new Date();
   const utc8Offset = 8 * 60 * 60 * 1000;
   const currentDateUtc8 = new Date(currentDate.getTime() + utc8Offset);
+
   const startOfYear = new Date(currentDateUtc8.getFullYear(), 0, 1);
   const hoursOfYear = Math.floor(
     (currentDateUtc8.getTime() - startOfYear.getTime()) / (1000 * 60 * 60)
   );
-
-  const now = new Date();
-  const utcTime = now.getTime() + now.getTimezoneOffset() * 60000;
-  const utc8Time = new Date(utcTime + 8 * 3600000);
-  const month = String(utc8Time.getMonth() + 1).padStart(2, '0');
-  const day = String(utc8Time.getDate()).padStart(2, '0');
+  const month = String(currentDateUtc8.getMonth() + 1).padStart(2, '0');
+  const day = String(currentDateUtc8.getDate()).padStart(2, '0');
   const curDateNumber = Number(month + day);
 
   return {

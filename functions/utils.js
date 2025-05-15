@@ -55,7 +55,7 @@ export function genWgurl(configSet, suffix, basePort = 50000) {
   const port = suffix + basePort;
   return `wg://${configSet.wgHost}:${port}` +
     `?publicKey=${configSet.publicKey}&privateKey=${configSet.privateKey}&presharedKey=${configSet.presharedKey}` +
-    "&ip=10.2.1.3/32&mtu=1420&dns=9.9.9.11&keepalive=1&udp=1" +
+    "&ip=10.2.1.3/32&mtu=1420&dns=149.112.112.11&keepalive=1&udp=1" +
     "&obfs=amneziawg&obfsParam=336,36,636,0,0,1,2,3,4&flag=HK#hk-w" +
     "-" + port;
 }

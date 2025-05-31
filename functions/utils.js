@@ -1,7 +1,7 @@
 export function getConfigSet(env, providedAccessKey) {
   // 查找匹配的配置组
   let configSet = null;
-  let keyIndex = 1;
+  let keyIndex = 0;
 
   while (env[`ACCESS_KEY_${keyIndex}`] !== undefined) {
     if (providedAccessKey === env[`ACCESS_KEY_${keyIndex}`]) {

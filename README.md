@@ -1,8 +1,8 @@
-# WG-Dynamic: 动态 WireGuard 配置轮换订阅
+# WG-Dynamic: 动态 WireGuard 配置订阅端口轮换
 
 这是一个部署在 [Cloudflare Pages](https://pages.cloudflare.com/) 上的项目，旨在根据环境变量动态生成适用于 [Shadowrocket](https://www.google.com/search?q=https://shadowrocket.app/) 的 WireGuard 配置链接。
 
-在某些网络环境下，标准的 WireGuard 协议可能会受到干扰或阻断。本项目通过动态生成包含时间相关端口的配置，提供一种简单的端口轮换机制，以期缓解此问题，提高连接的稳定性。
+在某些网络环境下，标准的 WireGuard 协议可能会受到干扰或阻断。本项目通过动态生成包含时间相关端口的配置，提供一种简单的<ins>端口轮换</ins>机制，以期缓解此问题，提高连接的稳定性。
 
 ## ✨ 功能特性
 

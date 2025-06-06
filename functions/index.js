@@ -4,6 +4,7 @@ export async function onRequest(context) {
   const { request, env } = context;
   const url = new URL(request.url);
   const providedAccessKey = url.searchParams.get("accesskey");
+  const basePort = url.searchParams.get("accesskey");
 
   const configSet = getConfigSet(env, providedAccessKey);
 
@@ -18,7 +19,7 @@ export async function onRequest(context) {
 
   let hoursSequence = [];
   for (let i = 0; i < 12; i++) {
-    hoursSequence.push(genWgurl(configSet, hoursOfYear + i));
+    hoursSequence.push(genWgurl(configSet, hoursOfYear + i, basePort));
   }
 
   return new Response(hoursSequence.join("\n"), {

@@ -4,7 +4,7 @@ export async function onRequest(context) {
   const { request, env } = context;
   const url = new URL(request.url);
   const providedAccessKey = url.searchParams.get("accesskey");
-  const basePort = url.searchParams.get("baseport") || 50000;
+  const basePort = Nmuber(url.searchParams.get("baseport")) || 50000;
 
   const configSet = getConfigSet(env, providedAccessKey);
 

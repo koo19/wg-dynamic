@@ -11,7 +11,8 @@ export function getConfigSet(env, providedAccessKey) {
         privateKey: env[`PRIVATE_KEY_${keyIndex}`],
         presharedKey: env[`PRESHARED_KEY_${keyIndex}`],
         dns: env[`DNS_${keyIndex}`],
-        profileName: env[`NAME_${keyIndex}`]
+        profileName: env[`NAME_${keyIndex}`],
+        mtu: env.[`MTU_${keyIndex}`] || "1420"
       };
       break;
     }
@@ -26,7 +27,8 @@ export function getConfigSet(env, providedAccessKey) {
       privateKey: env.PRIVATE_KEY,
       presharedKey: env.PRESHARED_KEY,
       dns: env.DNS || "9.9.9.11",
-      profileName: env.NAME
+      profileName: env.NAME,
+      mtu: env.MTU || "1420"
     };
   }
 
@@ -56,7 +58,9 @@ export function genWgurl(configSet, suffix, basePort = 50000) {
   const port = suffix + basePort;
   return `wg://${configSet.wgHost}:${port}` +
     `?publicKey=${configSet.publicKey}&privateKey=${configSet.privateKey}&presharedKey=${configSet.presharedKey}` +
-    "&ip=10.2.1.3/32&mtu=1420&dns=" + 
+    "&ip=10.2.1.3/32&mtu=" +
+    `${configSet.mtu}` +
+    "&dns=" + 
     `${configSet.dns}` +
     "&keepalive=1&udp=1" +
     "&obfs=amneziawg&obfsParam=336,36,636,0,0,1,2,3,4" +

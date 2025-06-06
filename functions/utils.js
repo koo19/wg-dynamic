@@ -12,8 +12,8 @@ export function getConfigSet(env, providedAccessKey) {
         presharedKey: env[`PRESHARED_KEY_${keyIndex}`],
         dns: env[`DNS_${keyIndex}`],
         profileName: env[`NAME_${keyIndex}`],
-        mtu: env.[`MTU_${keyIndex}`] || "1420",
-        local_ip: env.[`IP_${keyIndex}`] || "10.11.12.13"
+        mtu: env[`MTU_${keyIndex}`] || "1420",
+        local_ip: env[`IP_${keyIndex}`] || "10.11.12.13"
       };
       break;
     }

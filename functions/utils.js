@@ -12,7 +12,8 @@ export function getConfigSet(env, providedAccessKey) {
         presharedKey: env[`PRESHARED_KEY_${keyIndex}`],
         dns: env[`DNS_${keyIndex}`],
         profileName: env[`NAME_${keyIndex}`],
-        mtu: env.[`MTU_${keyIndex}`] || "1420"
+        mtu: env.[`MTU_${keyIndex}`] || "1420",
+        ip: env.[`IP_${keyIndex}`] || "10.11.12.13"
       };
       break;
     }
@@ -28,7 +29,8 @@ export function getConfigSet(env, providedAccessKey) {
       presharedKey: env.PRESHARED_KEY,
       dns: env.DNS || "9.9.9.11",
       profileName: env.NAME,
-      mtu: env.MTU || "1420"
+      mtu: env.MTU || "1420"，
+      ip: env.IP || "10.11.12.13"
     };
   }
 
@@ -58,7 +60,9 @@ export function genWgurl(configSet, suffix, basePort = 50000) {
   const port = suffix + basePort;
   return `wg://${configSet.wgHost}:${port}` +
     `?publicKey=${configSet.publicKey}&privateKey=${configSet.privateKey}&presharedKey=${configSet.presharedKey}` +
-    "&ip=10.2.1.3/32&mtu=" +
+    "&ip=" + 
+    `${configSet.ip}` +
+    "10.2.1.3/32&mtu=" +
     `${configSet.mtu}` +
     "&dns=" + 
     `${configSet.dns}` +

@@ -28,9 +28,7 @@ export async function onRequest(context) {
       "    type: select\n" +
       "    proxies:\n" +
       "      - \"wg-dynamic-0\"\n" +
-      "      - DIRECT\n" +
-      "rules:\n" +
-      "  - MATCH,PROXY\n";
+      "      - DIRECT\n";
 
       const headers = new Headers({
       "Content-Type": "text/plain; charset=utf-8",

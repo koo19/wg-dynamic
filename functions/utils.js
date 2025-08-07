@@ -1,7 +1,7 @@
 export function getConfigSet(env, providedAccessKey) {
   // 查找匹配的配置组
   let configSet = null;
-  let keyIndex = 1;
+  let keyIndex = 0;
 
   while (env[`ACCESS_KEY_${keyIndex}`] !== undefined) {
     if (providedAccessKey === env[`ACCESS_KEY_${keyIndex}`]) {
@@ -9,7 +9,11 @@ export function getConfigSet(env, providedAccessKey) {
         wgHost: env[`WG_HOST_${keyIndex}`],
         publicKey: env[`PUBLIC_KEY_${keyIndex}`],
         privateKey: env[`PRIVATE_KEY_${keyIndex}`],
-        presharedKey: env[`PRESHARED_KEY_${keyIndex}`]
+        presharedKey: env[`PRESHARED_KEY_${keyIndex}`],
+        dns: env[`DNS_${keyIndex}`],
+        profileName: env[`NAME_${keyIndex}`],
+        mtu: env[`MTU_${keyIndex}`] || "1420",
+        local_ip: env[`IP_${keyIndex}`] || "10.11.12.13/32"
       };
       break;
     }
@@ -22,7 +26,11 @@ export function getConfigSet(env, providedAccessKey) {
       wgHost: env.WG_HOST,
       publicKey: env.PUBLIC_KEY,
       privateKey: env.PRIVATE_KEY,
-      presharedKey: env.PRESHARED_KEY
+      presharedKey: env.PRESHARED_KEY,
+      dns: env.DNS || "9.9.9.11",
+      profileName: env.NAME,
+      mtu: env.MTU || "1420",
+      local_ip: env.IP || "10.11.12.13/32"
     };
   }
 
@@ -52,9 +60,18 @@ export function genWgurl(configSet, suffix, basePort = 50000) {
   const port = suffix + basePort;
   return `wg://${configSet.wgHost}:${port}` +
     `?publicKey=${configSet.publicKey}&privateKey=${configSet.privateKey}&presharedKey=${configSet.presharedKey}` +
-    "&ip=10.2.1.3/32&mtu=1420&dns=149.112.112.11&keepalive=1&udp=1" +
-    "&obfs=amneziawg&obfsParam=336,36,636,0,0,1,2,3,4&flag=HK#hk-w" +
-    "-" + port;
+    "&ip=" + 
+    `${configSet.local_ip}` +
+    "&mtu=" +
+    `${configSet.mtu}` +
+    "&dns=" + 
+    `${configSet.dns}` +
+    "&keepalive=1&udp=1" +
+    "&obfs=amneziawg&obfsParam=336,36,636,0,0,1,2,3,4" +
+    "#" +
+    `${configSet.profileName}` +
+    "-" +
+    port;
 }
 
 /**

@@ -28,10 +28,11 @@ export async function onRequest(context) {
       "    type: select\n" +
       "    proxies:\n" +
       "      - \"wg-dynamic-0\"\n" +
-      "      - DIRECT\n";
+      "      - DIRECT\n" +
+      "rules:\n" +
+      "  - MATCH,PROXY\n";
 
-    // 【核心修改】创建一个新的 Headers 对象，并添加禁止缓存的指令
-    const headers = new Headers({
+      const headers = new Headers({
       "Content-Type": "text/plain; charset=utf-8",
       "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
       "Pragma": "no-cache",

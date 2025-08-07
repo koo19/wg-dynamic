@@ -33,7 +33,7 @@ export async function onRequest(context) {
     });
 
     // 在 Response 中使用这个新的 headers 对象
-    return new Response(base64EncodedConfig, {
+    return new Response(fullYamlConfig, {
       headers: headers,
     });
 

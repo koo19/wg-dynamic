@@ -21,9 +21,7 @@ export async function onRequest(context) {
 
     const { hoursOfYear } = getTimeInfo();
 
-    let fullYamlConfig = "proxies:\n";
-    fullYamlConfig += genClashYamlProxy(configSet, hoursOfYear, 50000);
-    
+    const fullYamlConfig = "proxies:\n" + genClashYamlProxy(configSet, hoursOfYear, 50000);    
     const base64EncodedConfig = btoa(fullYamlConfig);
 
     return new Response(base64EncodedConfig, {

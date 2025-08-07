@@ -83,7 +83,7 @@ export function genWgurl(configSet, suffix, basePort = 50000) {
  */
 export function genClashYamlProxy(configSet, suffix, basePort = 50000) {
   const port = suffix + basePort;
-  const nodeName = `hk-wg`; // 节点名称
+  const nodeName = `wg-dynamic-0`;
 
   // 使用模板字符串拼接 YAML，注意缩进
   const yamlString = `

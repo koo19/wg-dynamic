@@ -21,24 +21,23 @@ export async function onRequest(context) {
 
     const { hoursOfYear } = getTimeInfo();
 
-    const fullYamlConfig = "proxies:\n" + genClashYamlProxy(configSet, hoursOfYear, 50000);    
+    const fullYamlConfig = "proxies:\n" + genClashYamlProxy(configSet, hoursOfYear, 50000);
     const base64EncodedConfig = btoa(fullYamlConfig);
 
-    return new Response(base64EncodedConfig, {
-      headers: { "Content-Type": "text/plain; charset=utf-8" },
+    // 【核心修改】创建一个新的 Headers 对象，并添加禁止缓存的指令
+    const headers = new Headers({
+      "Content-Type": "text/plain; charset=utf-8",
+      "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
+      "Pragma": "no-cache",
+      "Expires": "0"
     });
 
-  } catch (error) { // <--- 如果 try 块中发生任何错误，代码会跳到这里
-    // 返回一个包含详细错误信息的响应，而不是 1101
-    return new Response(
-      `An error occurred:\n\n` +
-      `Error Name: ${error.name}\n` +
-      `Error Message: ${error.message}\n` +
-      `Error Stack:\n${error.stack}`,
-      {
-        status: 500, // Internal Server Error
-        headers: { "Content-Type": "text/plain; charset=utf-8" },
-      }
-    );
+    // 在 Response 中使用这个新的 headers 对象
+    return new Response(base64EncodedConfig, {
+      headers: headers,
+    });
+
+  } catch (error) {
+    return new Response(`Error: ${error.message}\nStack: ${error.stack}`, { status: 500 });
   }
 }

@@ -24,11 +24,11 @@ export async function onRequest(context) {
     const fullYamlConfig = "proxies:\n" + 
       genClashYamlProxy(configSet, hoursOfYear, 50000) +
       "\nproxy-groups:\n" +
-      "  - name: 'PROXY'\n" +
+      "  - name: \"PROXY\"\n" +
       "    type: select\n" +
       "    proxies:\n" +
-      "      - '\"wg-dynamic-0\"'\n" +
-      "      - 'DIRECT\n";
+      "      - \"wg-dynamic-0\"\n" +
+      "      - DIRECT\n";
 
     // 【核心修改】创建一个新的 Headers 对象，并添加禁止缓存的指令
     const headers = new Headers({

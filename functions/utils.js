@@ -74,6 +74,12 @@ export function genWgurl(configSet, suffix, basePort = 50000) {
     port;
 }
 
+export function genWgV2rayUrl(configSet, suffix, basePort = 50000) {
+  const port = suffix + basePort;
+  const url = `wireguard://${configSet.publicKey}${configSet.wgHost}:${port}?publickey=${configSet.publicKey}&presharedKey=${configSet.presharedKey}&address=${configSet.local_ip}&mtu=${configSet.mtu}#${configSet.profileName}`;
+  return encodeURI(url);
+}
+
 /**
  * Generates a Clash-compatible WireGuard proxy configuration in YAML format.
  * @param {object} configSet - The configuration object containing keys and host.

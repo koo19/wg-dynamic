@@ -1,4 +1,4 @@
-import { getConfigSet, getTimeInfo, genWgurl } from './utils';
+import { getConfigSet, getTimeInfo, genWgV2rayUrl } from './utils';
 
 export async function onRequest(context) {
   const { request, env } = context;

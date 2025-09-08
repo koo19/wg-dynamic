@@ -19,7 +19,7 @@ export async function onRequest(context) {
 
   let hoursSequence = [];
   for (let i = 0; i < 1; i++) {
-    hoursSequence.push(genWgurl(configSet, hoursOfYear + i), basePort);
+    hoursSequence.push(genWgurl(configSet, (hoursOfYear + i), basePort));
   }
 
   return new Response(hoursSequence.join("\n"), {

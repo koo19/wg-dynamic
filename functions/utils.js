@@ -76,8 +76,19 @@ export function genWgurl(configSet, suffix, basePort = 50000) {
 
 export function genWgV2rayUrl(configSet, suffix, basePort = 50000) {
   const port = suffix + basePort;
-  const url = `wireguard://${configSet.publicKey}${configSet.wgHost}:${port}?publickey=${configSet.publicKey}&presharedKey=${configSet.presharedKey}&address=${configSet.local_ip}&mtu=${configSet.mtu}#${configSet.profileName}`;
-  return encodeURI(url);
+  const url = `wireguard://` +
+  encodeURIComponent(`${configSet.publicKey}${configSet.wgHost}:${port}`) +
+  `?publickey=` +
+  encodeURIComponent(`${configSet.publicKey}`) +
+  `&presharedKey=` + 
+  encodeURIComponent(`${configSet.presharedKey}`) + 
+  `&address=` +
+  encodeURIComponent(`${configSet.local_ip}`) +
+  `&mtu=` + 
+  encodeURIComponent(`${configSet.mtu}`) +
+  `#` + 
+  `${configSet.profileName}`;
+  return url;
 }
 
 /**

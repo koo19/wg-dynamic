@@ -77,7 +77,7 @@ export function genWgurl(configSet, suffix, basePort = 50000) {
 export function genWgV2rayUrl(configSet, suffix, basePort = 50000) {
   const port = suffix + basePort;
   const url = `wireguard://` +
-  encodeURIComponent(`${configSet.publicKey}`) + 
+  encodeURIComponent(`${configSet.privateKey}`) + 
   `@` +
   encodeURIComponent(`${configSet.wgHost}`) + 
   `:` + 

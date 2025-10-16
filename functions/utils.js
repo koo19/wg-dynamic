@@ -24,7 +24,7 @@ export function getConfigSet(env, providedAccessKey) {
   // 检查默认配置
   if (!configSet && providedAccessKey === env.ACCESS_KEY) {
     configSet = {
-      serial: 0,
+      serial: -1,
       wgHost: env.WG_HOST,
       publicKey: env.PUBLIC_KEY,
       privateKey: env.PRIVATE_KEY,
@@ -66,7 +66,8 @@ export function genWgurl(
 ) {
   let port = suffix + basePort;
   if (isServerSubmitted == 1) {
-    port = env.WG_KV.get(`hook-port_${configSet.serial}`);
+    const kvKey = `hook-port${configSet.serial === -1 ? "" : `_${configSet.serial}`}`;
+    port = env.WG_KV.get(kvKey);
   }
   return (
     `wg://${configSet.wgHost}:${port}` +
@@ -94,7 +95,8 @@ export function genWgV2rayUrl(
 ) {
   let port = suffix + basePort;
   if (isServerSubmitted == 1) {
-    port = env.WG_KV.get(`hook-port_${configSet.serial}`);
+    const kvKey = `hook-port${configSet.serial === -1 ? "" : `_${configSet.serial}`}`;
+    port = env.WG_KV.get(kvKey);
   }
   const url =
     `wireguard://` +

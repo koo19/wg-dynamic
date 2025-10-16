@@ -16,6 +16,9 @@ export async function onRequestPost(context) {
   let secret = env.WEBHOOK_SECRET;
   let keyIndex = 0;
   let serial = 0;
+  if (authHeader && authHeader === `Bearer ${secret}`) {
+    serial = -1;
+  }
   while (env[`WEBHOOK_SECRET_${keyIndex}`] !== undefined) {
     secret = env[`WEBHOOK_SECRET_${keyIndex}`];
     if (authHeader && authHeader === `Bearer ${secret}`) {
@@ -51,7 +54,7 @@ export async function onRequestPost(context) {
   }
 
   try {
-    await env.WG_KV.put(`hook-port_${serial}`, port);
+    await env.WG_KV.put(`hook-port` + (serial == -1) ? "" : `_${serial}`, port);
     console.log(`Successfully saved port ${port} to KV.`);
     return new Response(JSON.stringify({ success: true, port: port }), {
       status: 200,

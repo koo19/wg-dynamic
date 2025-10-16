@@ -58,7 +58,7 @@ export function getTimeInfo() {
   };
 }
 
-export function genWgurl(
+export async function genWgurl(
   configSet,
   suffix,
   basePort = 50000,
@@ -67,7 +67,7 @@ export function genWgurl(
   let port = suffix + basePort;
   if (isServerSubmitted == 1) {
     const kvKey = `hook-port${configSet.serial === -1 ? "" : `_${configSet.serial}`}`;
-    port = env.WG_KV.get(kvKey);
+    port = await env.WG_KV.get(kvKey);
   }
   return (
     `wg://${configSet.wgHost}:${port}` +
@@ -87,7 +87,7 @@ export function genWgurl(
   );
 }
 
-export function genWgV2rayUrl(
+export async function genWgV2rayUrl(
   configSet,
   suffix,
   basePort = 50000,
@@ -96,7 +96,7 @@ export function genWgV2rayUrl(
   let port = suffix + basePort;
   if (isServerSubmitted == 1) {
     const kvKey = `hook-port${configSet.serial === -1 ? "" : `_${configSet.serial}`}`;
-    port = env.WG_KV.get(kvKey);
+    port = await env.WG_KV.get(kvKey);
   }
   const url =
     `wireguard://` +

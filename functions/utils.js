@@ -83,7 +83,7 @@ export function genWgV2rayUrl(configSet, suffix, basePort = 50000, isServerSubmi
     port = env.WG_KV.get('hook-port');
   }
   const url = `wireguard://` +
-  encodeURIComponent(`${configSet.publicKey}`) + 
+  encodeURIComponent(`${configSet.privateKey}`) + 
   `@` +
   encodeURIComponent(`${configSet.wgHost}`) + 
   `:` + 

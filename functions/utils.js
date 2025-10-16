@@ -57,7 +57,7 @@ export function getTimeInfo() {
 }
 
 export function genWgurl(configSet, suffix, basePort = 50000, isServerSubmitted = 0) {
-  const port = suffix + basePort;
+  let port = suffix + basePort;
   if (isServerSubmitted == 1) {
     port = env.WG_KV.get('hook-port');
   }
@@ -78,7 +78,7 @@ export function genWgurl(configSet, suffix, basePort = 50000, isServerSubmitted 
 }
 
 export function genWgV2rayUrl(configSet, suffix, basePort = 50000, isServerSubmitted = 0) {
-  const port = suffix + basePort;
+  let port = suffix + basePort;
   if (isServerSubmitted == 1) {
     port = env.WG_KV.get('hook-port');
   }

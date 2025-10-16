@@ -5,7 +5,7 @@ export async function onRequest(context) {
   const url = new URL(request.url);
   const providedAccessKey = url.searchParams.get("accesskey");
   const basePort = Number(url.searchParams.get("baseport")) || 50000;
-  const isServerSubmitted = url.searchParams.get("serversubmitted") || 0;
+  const isServerSubmitted = Number(url.searchParams.get("serversubmitted")) || 0;
 
   const configSet = getConfigSet(env, providedAccessKey);
 

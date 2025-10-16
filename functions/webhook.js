@@ -11,22 +11,34 @@ export async function onRequestPost(context) {
   const { request, env } = context;
 
   // 1. 安全验证 (推荐)
-  // 从环境变量中获取预设的密钥
   const authHeader = request.headers.get("Authorization");
-  let secret = env.WEBHOOK_SECRET;
-  let keyIndex = 0;
-  let serial = 0;
-  if (authHeader && authHeader === `Bearer ${secret}`) {
-    serial = -1;
-  }
-  while (env[`WEBHOOK_SECRET_${keyIndex}`] !== undefined) {
-    secret = env[`WEBHOOK_SECRET_${keyIndex}`];
-    if (authHeader && authHeader === `Bearer ${secret}`) {
-      serial = keyIndex;
+  let authorized = false;
+  let serial = -1;
+
+  // 检查旧版单密钥
+  if (env.WEBHOOK_SECRET) {
+    if (authHeader === `Bearer ${env.WEBHOOK_SECRET}`) {
+      authorized = true;
     }
-    keyIndex++;
   }
-  if (keyIndex > 0 && serial === 0) {
+
+  // 如果旧版密钥未验证通过，则检查新版多密钥
+  if (!authorized) {
+    let keyIndex = 0;
+    while (env[`WEBHOOK_SECRET_${keyIndex}`] !== undefined) {
+      const secret = env[`WEBHOOK_SECRET_${keyIndex}`];
+      if (authHeader === `Bearer ${secret}`) {
+        authorized = true;
+        serial = keyIndex;
+        break; // 找到匹配项后立即退出循环
+      }
+      keyIndex++;
+    }
+  }
+
+  // 如果定义了任何密钥但验证失败，则拒绝访问
+  const hasAnySecret = env.WEBHOOK_SECRET !== undefined || env.WEBHOOK_SECRET_0 !== undefined;
+  if (hasAnySecret && !authorized) {
     return new Response("Unauthorized", { status: 401 });
   }
 
@@ -54,7 +66,7 @@ export async function onRequestPost(context) {
   }
 
   try {
-    await env.WG_KV.put(`hook-port ${serial === -1 ? "" : "_" + serial}`, port);
+    await env.WG_KV.put(`hook-port${serial === -1 ? "" : "_" + serial}`, port);
     console.log(`Successfully saved port ${port} to KV.`);
     return new Response(JSON.stringify({ success: true, port: port }), {
       status: 200,

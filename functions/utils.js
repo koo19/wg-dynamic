@@ -59,6 +59,7 @@ export function getTimeInfo() {
 }
 
 export async function genWgurl(
+  env,
   configSet,
   suffix,
   basePort = 50000,
@@ -67,6 +68,7 @@ export async function genWgurl(
   let port = suffix + basePort;
   if (isServerSubmitted == 1) {
     const kvKey = `hook-port${configSet.serial === -1 ? "" : `_${configSet.serial}`}`;
+    console.log(kvKey)
     port = await env.WG_KV.get(kvKey);
   }
   return (
@@ -88,6 +90,7 @@ export async function genWgurl(
 }
 
 export async function genWgV2rayUrl(
+  env,
   configSet,
   suffix,
   basePort = 50000,

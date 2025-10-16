@@ -10,7 +10,7 @@
 export async function onRequestPost(context) {
   const { request, env } = context;
 
-  // 1. 安全验证 (推荐)
+  // 1. 安全验证
   const authHeader = request.headers.get("Authorization");
   let authorized = false;
   let serial = -1;

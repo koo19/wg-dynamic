@@ -20,7 +20,7 @@ export async function onRequest(context) {
 
   let hoursSequence = [];
   for (let i = 0; i < 1; i++) {
-    hoursSequence.push(await genWgV2rayUrl(configSet, hoursOfYear + i, basePort, isServerSubmitted));
+    hoursSequence.push(await genWgV2rayUrl(env, configSet, hoursOfYear + i, basePort, isServerSubmitted));
   }
 
   return new Response(hoursSequence.join("\n"), {

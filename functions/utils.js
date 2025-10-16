@@ -6,6 +6,7 @@ export function getConfigSet(env, providedAccessKey) {
   while (env[`ACCESS_KEY_${keyIndex}`] !== undefined) {
     if (providedAccessKey === env[`ACCESS_KEY_${keyIndex}`]) {
       configSet = {
+        serial: `${keyIndex}`,
         wgHost: env[`WG_HOST_${keyIndex}`],
         publicKey: env[`PUBLIC_KEY_${keyIndex}`],
         privateKey: env[`PRIVATE_KEY_${keyIndex}`],
@@ -13,7 +14,7 @@ export function getConfigSet(env, providedAccessKey) {
         dns: env[`DNS_${keyIndex}`],
         profileName: env[`NAME_${keyIndex}`],
         mtu: env[`MTU_${keyIndex}`] || "1420",
-        local_ip: env[`IP_${keyIndex}`] || "10.11.12.13/32"
+        local_ip: env[`IP_${keyIndex}`] || "10.11.12.13/32",
       };
       break;
     }
@@ -23,6 +24,7 @@ export function getConfigSet(env, providedAccessKey) {
   // 检查默认配置
   if (!configSet && providedAccessKey === env.ACCESS_KEY) {
     configSet = {
+      serial: 0,
       wgHost: env.WG_HOST,
       publicKey: env.PUBLIC_KEY,
       privateKey: env.PRIVATE_KEY,
@@ -30,7 +32,7 @@ export function getConfigSet(env, providedAccessKey) {
       dns: env.DNS || "9.9.9.11",
       profileName: env.NAME,
       mtu: env.MTU || "1420",
-      local_ip: env.IP || "10.11.12.13/32"
+      local_ip: env.IP || "10.11.12.13/32",
     };
   }
 
@@ -46,58 +48,71 @@ export function getTimeInfo() {
   const hoursOfYear = Math.floor(
     (currentDateUtc8.getTime() - startOfYear.getTime()) / (1000 * 60 * 60)
   );
-  const month = String(currentDateUtc8.getMonth() + 1).padStart(2, '0');
-  const day = String(currentDateUtc8.getDate()).padStart(2, '0');
+  const month = String(currentDateUtc8.getMonth() + 1).padStart(2, "0");
+  const day = String(currentDateUtc8.getDate()).padStart(2, "0");
   const curDateNumber = Number(month + day);
 
   return {
     hoursOfYear,
-    curDateNumber
+    curDateNumber,
   };
 }
 
-export function genWgurl(configSet, suffix, basePort = 50000, isServerSubmitted = 0) {
+export function genWgurl(
+  configSet,
+  suffix,
+  basePort = 50000,
+  isServerSubmitted = 0
+) {
   let port = suffix + basePort;
   if (isServerSubmitted == 1) {
-    port = env.WG_KV.get('hook-port');
+    port = env.WG_KV.get(`hook-port_${configSet.serial}`);
   }
-  return `wg://${configSet.wgHost}:${port}` +
+  return (
+    `wg://${configSet.wgHost}:${port}` +
     `?publicKey=${configSet.publicKey}&privateKey=${configSet.privateKey}&presharedKey=${configSet.presharedKey}` +
-    "&ip=" + 
+    "&ip=" +
     `${configSet.local_ip}` +
     "&mtu=" +
     `${configSet.mtu}` +
-    "&dns=" + 
+    "&dns=" +
     `${configSet.dns}` +
     "&keepalive=1&udp=1" +
     "&obfs=amneziawg&obfsParam=336,36,636,0,0,1,2,3,4" +
     "#" +
     `${configSet.profileName}` +
     "-" +
-    port;
+    port
+  );
 }
 
-export function genWgV2rayUrl(configSet, suffix, basePort = 50000, isServerSubmitted = 0) {
+export function genWgV2rayUrl(
+  configSet,
+  suffix,
+  basePort = 50000,
+  isServerSubmitted = 0
+) {
   let port = suffix + basePort;
   if (isServerSubmitted == 1) {
-    port = env.WG_KV.get('hook-port');
+    port = env.WG_KV.get(`hook-port_${configSet.serial}`);
   }
-  const url = `wireguard://` +
-  encodeURIComponent(`${configSet.privateKey}`) + 
-  `@` +
-  encodeURIComponent(`${configSet.wgHost}`) + 
-  `:` + 
-  encodeURIComponent(`${port}`) +
-  `?publickey=` +
-  encodeURIComponent(`${configSet.publicKey}`) +
-  `&presharedKey=` + 
-  encodeURIComponent(`${configSet.presharedKey}`) + 
-  `&address=` +
-  encodeURIComponent(`${configSet.local_ip}`) +
-  `&mtu=` + 
-  encodeURIComponent(`${configSet.mtu}`) +
-  `#` + 
-  `${configSet.profileName}`;
+  const url =
+    `wireguard://` +
+    encodeURIComponent(`${configSet.privateKey}`) +
+    `@` +
+    encodeURIComponent(`${configSet.wgHost}`) +
+    `:` +
+    encodeURIComponent(`${port}`) +
+    `?publickey=` +
+    encodeURIComponent(`${configSet.publicKey}`) +
+    `&presharedKey=` +
+    encodeURIComponent(`${configSet.presharedKey}`) +
+    `&address=` +
+    encodeURIComponent(`${configSet.local_ip}`) +
+    `&mtu=` +
+    encodeURIComponent(`${configSet.mtu}`) +
+    `#` +
+    `${configSet.profileName}`;
   return url;
 }
 

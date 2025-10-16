@@ -54,7 +54,7 @@ export async function onRequestPost(context) {
   }
 
   try {
-    await env.WG_KV.put(`hook-port` + (serial == -1) ? "" : `_${serial}`, port);
+    await env.WG_KV.put(`hook-port ${serial === -1 ? "" : "_" + serial}`, port);
     console.log(`Successfully saved port ${port} to KV.`);
     return new Response(JSON.stringify({ success: true, port: port }), {
       status: 200,
